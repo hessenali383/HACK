@@ -1,50 +1,34 @@
-# FaceID — Real-Time Face Recognition
+# FaceID — Real-Time Face Recognition System
 
-## 🚀 How to Run in GitHub Codespaces
-
-### Step 1 — Make sure your repo has this structure:
-```
-your-repo/
-├── .devcontainer/
-│   └── devcontainer.json      ← MUST be in this folder
-├── .github/
-│   └── workflows/
-│       └── ci.yml
-├── templates/
-│   └── index.html
-├── tests/
-│   └── test_api.py
-├── database/                  ← created automatically
-├── app.py
-├── requirements.txt
-├── Dockerfile
-├── docker-compose.yml
-├── .dockerignore
-└── README.md
-```
-
-### Step 2 — Open Codespace
-Click **Code → Codespaces → Create codespace on main**
-
-Codespaces will automatically:
-1. Pull the Python 3.11 devcontainer image
-2. Run `pip install -r requirements.txt`
-3. Start `python app.py`
-
-### Step 3 — Open the app
-Go to the **Ports** tab → click the link next to port **5000**
+A lightweight, modern, and high-performance web-based face recognition application. This system captures video from the client's webcam, processes frames via a Flask backend using deep learning models to detect and recognize faces in real-time, and manages a local database of known individuals.
 
 ---
 
-## 🐳 Run with Docker (locally)
-```bash
-docker compose up --build
-# open http://localhost:5000
-```
+## 🚀 Key Features
 
-## 🐍 Run without Docker (locally)
-```bash
-pip install -r requirements.txt
-python app.py
-# open http://localhost:5000
-```
+* **Real-Time Multi-Face Tracking:** Detects, crops, and processes multiple faces simultaneously directly from the live camera stream.
+* **AI-Powered Accuracy:** Powered by **MTCNN** for robust face detection/bounding box localization, and **FaceNet (InceptionResnetV1)** pretrained on `vggface2` for generating high-quality face embeddings.
+* **On-the-Fly Registration:** An intuitive pop-up interface automatically detects unknown faces, allowing you to register and name them instantly without restarting the server.
+* **Persistent Local Storage:** Utilizes **SQLite** to securely store face embeddings and names, ensuring quick lookups and easy management.
+* **Cyberpunk UI Dashboard:** Features a responsive frontend with interactive controls to adjust frame verification intervals, change cosine similarity confidence thresholds, and view live performance metrics like FPS and Latency.
+
+---
+
+## 🛠️ Tech Stack
+
+* **Backend:** Python, Flask, Flask-CORS
+* **AI/ML:** PyTorch, Facenet-PyTorch, Scikit-Learn (Cosine Similarity), NumPy
+* **Database:** SQLite3
+* **Frontend:** HTML5 (WebRTC MediaDevices & Canvas API), CSS3 (Modern Grid/Flexbox), JavaScript (Vanilla ES6)
+
+---
+
+## ⚙️ Installation & Setup
+
+### 1. Clone or Create the Files
+Ensure your project directory structure looks exactly like this:
+```text
+├── app.py
+├── database/        # Created automatically upon startup
+└── templates/
+    └── index.html
