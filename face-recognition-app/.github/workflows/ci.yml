@@ -1,0 +1,59 @@
+name: FaceID CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install flake8
+      - run: |
+          flake8 app.py --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 app.py --count --exit-zero --max-line-length=120 --statistics
+
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-light
+      - run: pip install flask flask-cors numpy Pillow scikit-learn pytest
+      - run: pytest tests/ -v --tb=short
+
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+          tags: faceid-app:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Smoke test
+        run: |
+          docker run -d --name faceid_test -p 5000:5000 faceid-app:${{ github.sha }}
+          for i in $(seq 1 12); do
+            sleep 5
+            curl -sf http://localhost:5000/ && echo "App is healthy" && exit 0
+          done
+          docker logs faceid_test && exit 1

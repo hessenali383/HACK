@@ -1,0 +1,40 @@
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual envs
+venv/
+.venv/
+env/
+
+# Database (contains private face embeddings — do NOT commit)
+database/faces.db
+
+# Model cache (large files)
+.cache/
+torch_home/
+
+# Test images
+*.jpg
+*.jpeg
+*.png
+*.mp4
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
