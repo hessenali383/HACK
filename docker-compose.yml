@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+  faceid:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: faceid-app
+    container_name: faceid
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./database:/app/database
+    environment:
+      - PORT=5000
+    restart: unless-stopped
